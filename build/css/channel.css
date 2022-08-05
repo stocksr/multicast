@@ -17,19 +17,28 @@ body.fullscreen iframe {
 }
 */
 body.right-panel iframe:first-of-type {
+  height  : 100vh;
+  left    : 0;
   position: absolute;
-  top: 0;
-  left: 0;
-  width: 80vw;
-  height: 100vh;
+  top     : 0;
+  /* width   : 80vw; */
+  /* avius custom*/
+  width   : 67vw;
 }
 
 body.right-panel iframe:nth-of-type(2) {
+  /* height  : 100vh; */
+  /* left    : 80vw; */
   position: absolute;
-  top: 0;
-  left: 80vw;
-  width: 20vw;
-  height: 100vh;
+  top     : 0;
+  /* width   : 20vw; */ 
+    
+  /* AVIUS Custom */
+  transform: scale(0.65);
+  height   : 200vh; /* 153.84 */
+  width    : 60vw; /* 50.76 */
+  left     : 67vw;
+  transform-origin: top left;
 }
 
 #error {

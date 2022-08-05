@@ -112,7 +112,10 @@ router
   })
 
 router.get('/:device_id/:preview*?', (req, res) => {
+  // console.log('serving device request', req)
   let d = devices.withId(req.params.device_id)
+  //   console.log(' device ', d)
+
   if (d && takeover.isActive()) {
     res.render(`layouts/${takeover.channel().layout}`, {
       deviceId: req.params.device_id,

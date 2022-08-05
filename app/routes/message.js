@@ -8,6 +8,7 @@ const devices = require('../lib/devices')
 const messageFile = path.resolve(__dirname, '..', '..', 'message.txt')
 
 router.get('/', (req, res) => {
+  console.log('message', messageFile)
   fs.readFile(messageFile, (err, data) => {
     if (err || data == '')
       res.render('message', { message: 'No message configured.' })

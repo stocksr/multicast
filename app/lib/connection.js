@@ -99,6 +99,7 @@ let func = {
     hasErrors: () => Object.keys(errors).length > 0,
     getErrors: () => errors,
     addError: (device, message) => {
+      return
       // you can pass a tag directly instead of a device
       let tag = typeof device === 'object' ? device.deviceId : device
       if (!errors[tag])

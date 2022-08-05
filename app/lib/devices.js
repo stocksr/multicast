@@ -1,6 +1,6 @@
 'use strict'
 
-const mdns = require('mdns')
+const dnssd = require('dnssd')
 
 const Chromecast = require('../models/Chromecast')
 const Channel = require('../models/Channel')
@@ -15,7 +15,9 @@ const func = {
     Chromecast.find()
       .populate('channel')
       .exec((err, chromecasts) => {
-        devices = chromecasts
+        if (chromecasts) {
+          devices = chromecasts
+        }
         devices.forEach(d => (d.status = 'offline'))
         findDevices()
         /* start interval to continue polling for device status */
@@ -44,8 +46,8 @@ const func = {
 
     /* Launch hub on newly registered device */
     let c = sockets.withHost(d.address)
-    if (c)
-      c.emit('register', d.deviceId) // emit 'register' to have setup page redirected
+    if (c) c.emit('register', d.deviceId)
+    // emit 'register' to have setup page redirected
     else launchHub(d.address) // establish connection if client hasn't already connected
   },
   reconnect: host => launchHub(host),
@@ -94,13 +96,13 @@ const func = {
 
 const findDevices = () => {
     /* Look for mDNS Cast devices on local network */
-    let browser = mdns.createBrowser(mdns.tcp('googlecast'))
+    let browser = dnssd.Browser(dnssd.tcp('googlecast'))
 
     /* Only scan IPv4 addresses */
-    mdns.Browser.defaultResolverSequence[1] =
-      'DNSServiceGetAddrInfo' in mdns.dns_sd
-        ? mdns.rst.DNSServiceGetAddrInfo()
-        : mdns.rst.getaddrinfo({ families: [4] })
+    // dnssd.Browser.defaultResolverSequence[1] =
+    //   'DNSServiceGetAddrInfo' in mdns.dns_sd
+    //     ? mdns.rst.DNSServiceGetAddrInfo()
+    //     : mdns.rst.getaddrinfo({ families: [4] })
 
     browser.on('serviceUp', service => {
       // service.name: Chromecast-hexadecimalid
@@ -113,7 +115,7 @@ const findDevices = () => {
       /* If device is registered, append local statistics */
       if (func.isRegistered(id)) {
         func.update(id, {
-          name: service.txtRecord.fn,
+          name: service.txt.fn,
           address: service.addresses[0],
           port: service.port
         })
@@ -127,7 +129,7 @@ const findDevices = () => {
         devices.push({
           unregistered: true,
           deviceId: id,
-          name: service.txtRecord.fn,
+          name: service.txt.fn,
           address: service.addresses[0],
           port: service.port,
           rotation: 'rot0'

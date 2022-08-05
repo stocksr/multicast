@@ -47,7 +47,7 @@ function checkFrame(frame) {
 
   if (!html) failed = true
   if (failed)
-    displayError('Frame loading blocked due to cross-origin prevention')
+    console.error('Frame loading blocked due to cross-origin prevention')
 }
 
 function checkCORS() {

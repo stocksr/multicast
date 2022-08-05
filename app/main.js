@@ -58,7 +58,10 @@ app.use('/message', require('./routes/message'))
 app.get('/landing', (req, res) => {
   var ip = stripIPv6(req.connection.remoteAddress), // Get IPv4 address of device
     d = devices.withHost(ip) // Find local info for device
-  if (d) res.redirect(`/devices/${d.deviceId}`)
+  if (d) {
+    console.log(`Connection From Device ${d.deviceId} detected redirecting`)
+    res.redirect(`/devices/${d.deviceId}`)
+  }
   // Redirect to device display // Display device info
   else
     res.render('setup-chromecast', {
