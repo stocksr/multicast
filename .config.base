@@ -1,0 +1,8 @@
+{
+  "mongoHost": "localhost",
+  "mongoPort": 27017,
+  "mongoUser": "",
+  "mongoPass": "",
+  "mongoAuthSource": "admin",
+  "appId": "5D185F74"
+}
