@@ -126,6 +126,7 @@ const findDevices = () => {
 
         /* Otherwise, add info for unregistered device */
       } else {
+        console.log('Found New Device: ', id, service.txt.fn)
         devices.push({
           unregistered: true,
           deviceId: id,
@@ -145,6 +146,7 @@ const findDevices = () => {
   },
   /* Establish connection with Chromecast */
   launchHub = host => {
+    console.log('launchHub: ', host)
     if (host) connection.establish(func.withHost(host), () => launchHub(host))
   }
 
