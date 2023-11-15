@@ -7,9 +7,11 @@ let func = {
     establish: (d, disconnectCallback) => {
       let host = d.address
       d.connectionFailCount = 0
+      console.log('establish', d.status, d.host)
       if (d.status == 'offline' || d.status == 'waiting') {
         const client = new Client()
         client.connect(host, () => {
+          console.log('connect', d.status, d.host)
           // reset number of failed connection attempts
           d.connectionFailCount = 0
 
@@ -48,10 +50,14 @@ let func = {
                 d,
                 'Receiver missed too many heartbeats, it is likely offline.'
               )
-            } else d.heartbeat.send({ type: 'PING' })
+            } else {
+              console.log('PING', d.status, d.host)
+              d.heartbeat.send({ type: 'PING' })
+            }
           }, 5 * 1000)
           d.heartbeat.on('message', (data, broadcast) => {
             if (data.type == 'PONG') {
+              console.log('PONG', d.status, d.host)
               d.missedHeartbeats = 0
               d.status = 'online'
               func.clearErrors(d)
