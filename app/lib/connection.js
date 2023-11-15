@@ -51,13 +51,11 @@ let func = {
                 'Receiver missed too many heartbeats, it is likely offline.'
               )
             } else {
-              console.log('PING', d.status, host)
               d.heartbeat.send({ type: 'PING' })
             }
           }, 5 * 1000)
           d.heartbeat.on('message', (data, broadcast) => {
             if (data.type == 'PONG') {
-              console.log('PONG', d.status, host)
               d.missedHeartbeats = 0
               d.status = 'online'
               func.clearErrors(d)
