@@ -7,7 +7,7 @@ let clients = []
 
 const func = {
   init: server => {
-    console.log('init connection client with host:', stripIPv6(server))
+    console.log('init connection client with host:', server)
     io = require('socket.io')(server)
     io.on('connection', client => {
       console.log(
