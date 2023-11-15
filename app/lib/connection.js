@@ -11,7 +11,7 @@ let func = {
       if (d.status == 'offline' || d.status == 'waiting') {
         const client = new Client()
         client.connect(host, () => {
-          console.log('connect', d.status, d.host)
+          console.log('connect', d.status, host)
           // reset number of failed connection attempts
           d.connectionFailCount = 0
 
@@ -51,13 +51,13 @@ let func = {
                 'Receiver missed too many heartbeats, it is likely offline.'
               )
             } else {
-              console.log('PING', d.status, d.host)
+              console.log('PING', d.status, host)
               d.heartbeat.send({ type: 'PING' })
             }
           }, 5 * 1000)
           d.heartbeat.on('message', (data, broadcast) => {
             if (data.type == 'PONG') {
-              console.log('PONG', d.status, d.host)
+              console.log('PONG', d.status, host)
               d.missedHeartbeats = 0
               d.status = 'online'
               func.clearErrors(d)
@@ -69,6 +69,7 @@ let func = {
 
           // monitor receiver status updates to insure hub is open
           d.receiver.on('message', (data, broadcast) => {
+            console.log('receiver.message', data, host)
             if (data.type != 'RECEIVER_STATUS')
               func.addError(d, `Message from receiver: ${data.type}`)
             if ((data.type = 'RECEIVER_STATUS')) {
