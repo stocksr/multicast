@@ -146,7 +146,6 @@ const findDevices = () => {
   },
   /* Establish connection with Chromecast */
   launchHub = host => {
-    console.log('launchHub: ', host)
     if (host) connection.establish(func.withHost(host), () => launchHub(host))
   }
 
